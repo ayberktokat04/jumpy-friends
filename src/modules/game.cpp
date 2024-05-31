@@ -2,12 +2,14 @@
 
 Game::Game(int width, int height, std::string title) {
     this->window = new raylib::Window(width, height, title);
+    this->ground = Ground(30, this->worldSpeed);
+    this->player = Player(this->worldSpeed);
     SetTargetFPS(60);
 
-    this->camera.position = (Vector3){-10.0f, 10.0f, -10.0f};
-    this->camera.target = (Vector3){0.0f, 0.0f, 0.0f};
+    this->camera.position = (Vector3){-4.0f, 7.50f, -5.0f};
+    this->camera.target = (Vector3){0.0f, 0.0f, 2.0f};
     this->camera.up = (Vector3){0.0f, 1.0f, 0.0f};
-    this->camera.fovy = 60.0f;
+    this->camera.fovy = 40.0f;
     this->camera.projection = CAMERA_PERSPECTIVE;
 }
 
@@ -28,16 +30,18 @@ void Game::PollEvents() {
 
 void Game::Update(double time, double deltaTime) {
     this->ground.Update();
+    this->player.Update();
 }
 
 void Game::Display(double time, double deltaTime) {
     BeginDrawing();
     {
-        ClearBackground(RAYWHITE);
+        ClearBackground(Color{0, 232, 0, 1});
         BeginMode3D(camera);
         {
-            DrawGrid(40, 0.5f);
+            // DrawGrid(40, 0.5f);
             this->ground.Draw();
+            this->player.Draw();
         }
         EndMode3D();
     }
@@ -45,5 +49,5 @@ void Game::Display(double time, double deltaTime) {
 }
 
 void Game::onClick(Vector2 position) {
-    this->ground.Step();
+    this->player.Jump();
 }

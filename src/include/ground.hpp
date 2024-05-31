@@ -12,11 +12,12 @@ class Ground {
     std::vector<Chunk> chunks;
     Chunk collapseNextChunk(Chunk previousChunk);
     Chunk getLastChunk();
+    double worldSpeed = 0.02;
 
     void SetupGround(int chunkCount);
 
    public:
-    Ground(int chunkCount = 10);
+    Ground(int chunkCount = 10, double worldSpeed = 0.02);
     void Step();
     void Update();
     void Draw();

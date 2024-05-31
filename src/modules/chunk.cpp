@@ -14,11 +14,11 @@ void Chunk::Draw() {
         BLUE,
         PURPLE};
 
-    this->position.DrawPlane({12, 1}, chunkColors[this->type]);
+    this->position.DrawPlane({30, 1}, chunkColors[this->type]);
 }
 
-void Chunk::Update() {
-    this->position.z -= 0.05;
+void Chunk::Update(double speed) {
+    this->position.z -= speed;
 }
 
 void Chunk::Despawn() {}

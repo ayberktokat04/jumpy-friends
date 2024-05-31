@@ -1,15 +1,16 @@
 #include "ground.hpp"
 
-Ground::Ground(int chunkCount) {
+Ground::Ground(int chunkCount, double worldSpeed) {
     if (chunkCount < 5) throw "Chunk count should be bigger than 5.";
 
+    this->worldSpeed = worldSpeed;
     this->SetupGround(chunkCount);
 }
 
 void Ground::SetupGround(int chunkCount) {
     int i;
-    for (i = 0; i < 4; i++) {
-        Chunk freewalk = Chunk{FreeWalk, JustExisting, Vector3{0, 0.1, (float)i}};
+    for (i = 0; i < 6; i++) {
+        Chunk freewalk = Chunk{FreeWalk, JustExisting, Vector3{6, 0.1, (float)i}};
         this->chunks.push_back(freewalk);
     }
 
@@ -68,7 +69,7 @@ void Ground::Step() {
 
 void Ground::Update() {
     for (auto chunk = this->chunks.begin(); chunk != this->chunks.end(); chunk++)
-        chunk->Update();
+        chunk->Update(this->worldSpeed);
 
     if (this->chunks[0].position.z < -10) this->Step();
 }

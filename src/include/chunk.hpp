@@ -27,10 +27,10 @@ struct Chunk {
     Chunk() {
         this->type = FreeWalk;
         this->state = JustExisting;
-        this->position = Vector3{0, 0, 0};
+        this->position = Vector3{6, 0, 0};
     }
 
-    Chunk(ChunkType type, ChunkState state, raylib::Vector3 position = {0, 0, 0}) {
+    Chunk(ChunkType type, ChunkState state, raylib::Vector3 position = {6, 0, 0}) {
         this->type = type;
         this->state = state;
         this->position = position;
@@ -38,7 +38,7 @@ struct Chunk {
 
     void Despawn();
     void Spawn();
-    void Update();
+    void Update(double);
     void Draw();
     void setPosition(raylib::Vector3);
 };
