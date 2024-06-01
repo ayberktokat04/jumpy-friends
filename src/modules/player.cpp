@@ -9,7 +9,7 @@ Player::Player(double worldSpeed) {
 }
 
 void Player::Draw() {
-    DrawSphere(this->position, 0.25, RED);
+    DrawSphere(this->position, 0.15, RED);
 }
 
 void Player::Update() {

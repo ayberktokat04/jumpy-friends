@@ -2,8 +2,7 @@
 
 Game::Game(int width, int height, std::string title) {
     this->window = new raylib::Window(width, height, title);
-    this->ground = Ground(30, this->worldSpeed);
-    this->player = Player(this->worldSpeed);
+
     SetTargetFPS(60);
 
     this->camera.position = (Vector3){-4.0f, 7.50f, -5.0f};
@@ -11,6 +10,11 @@ Game::Game(int width, int height, std::string title) {
     this->camera.up = (Vector3){0.0f, 1.0f, 0.0f};
     this->camera.fovy = 40.0f;
     this->camera.projection = CAMERA_PERSPECTIVE;
+
+    // this->shader.locs[SHADER_LOC_VECTOR_VIEW] = GetShaderLocation(shader, "viewPos");
+
+    // float cameraPos[3] = {camera.position.x, camera.position.y, camera.position.z};
+    // SetShaderValue(shader, shader.locs[SHADER_LOC_VECTOR_VIEW], cameraPos, SHADER_UNIFORM_VEC3);
 }
 
 void Game::Start() {
@@ -19,6 +23,7 @@ void Game::Start() {
         double deltaTime = GetFrameTime();
         this->PollEvents();
         this->Update(time, deltaTime);
+        // UpdateLightValues(shader, light);
         this->Display(time, deltaTime);
     }
 }
@@ -26,6 +31,9 @@ void Game::Start() {
 void Game::PollEvents() {
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         this->onClick(GetMousePosition());
+
+    if (IsKeyPressed(KEY_UP))
+        this->onKeyPress(KEY_UP);
 }
 
 void Game::Update(double time, double deltaTime) {
@@ -50,4 +58,9 @@ void Game::Display(double time, double deltaTime) {
 
 void Game::onClick(Vector2 position) {
     this->player.Jump();
+}
+
+void Game::onKeyPress(int key) {
+    if (key == KEY_UP)
+        this->player.Jump();
 }

@@ -5,6 +5,7 @@
 
 class Player {
    private:
+    raylib::Material material;
     Vector3 position = Vector3{0, 0.25, 0};
     double worldSpeed;
     double jumpSpeed;
