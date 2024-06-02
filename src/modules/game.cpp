@@ -1,9 +1,10 @@
 #include "game.hpp"
-
+#include "player.hpp"
 Game::Game(int width, int height, std::string title) {
     this->window = new raylib::Window(width, height, title);
-
+    this->player.ImportModel("src/models/OBJ/plane.obj");
     SetTargetFPS(60);
+
 
     this->camera.position = (Vector3){-4.0f, 7.50f, -5.0f};
     this->camera.target = (Vector3){0.0f, 0.0f, 2.0f};

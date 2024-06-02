@@ -8,8 +8,14 @@ Player::Player(double worldSpeed) {
     this->worldSpeed = worldSpeed;
 }
 
+void Player::ImportModel(const std::string& path) {
+    this->model = LoadModel(path.c_str());
+    this->model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("src/models/OBJ/plane_diffuse.png");
+    this->model.transform = MatrixScale(0.015, 0.015, 0.015);
+}
+
 void Player::Draw() {
-    DrawSphere(this->position, 0.15, RED);
+    DrawModel(this->model, this->position, 1.0f, WHITE);
 }
 
 void Player::Update() {

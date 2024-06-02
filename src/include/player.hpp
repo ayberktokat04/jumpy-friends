@@ -5,7 +5,6 @@
 
 class Player {
    private:
-    raylib::Material material;
     Vector3 position = Vector3{0, 0.25, 0};
     double worldSpeed;
     double jumpSpeed;
@@ -13,13 +12,16 @@ class Player {
     double zProgress = 0;
     double movement = -1;
     bool jumped = false;
-
+    Model model;
+    
     void UpdateY();
 
    public:
+   
     Player();
     Player(double speed);
     void Draw();
+    void ImportModel(const std::string& path);
     void Update();
     void Jump();
 };
