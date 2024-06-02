@@ -12,7 +12,10 @@ class Player {
     double zProgress = 0;
     double movement = -1;
     bool jumped = false;
-    Model model;
+    std::vector<Model> models;
+    std::vector<float> scales;
+    int currentModelIndex;
+
     
     void UpdateY();
 
@@ -21,7 +24,8 @@ class Player {
     Player();
     Player(double speed);
     void Draw();
-    void ImportModel(const std::string& path);
+    void ImportModel(const std::string& path, const std::string& texturePath, float scale);
+    void SwitchModel();
     void Update();
     void Jump();
 };

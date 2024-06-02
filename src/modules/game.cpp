@@ -2,9 +2,13 @@
 #include "player.hpp"
 Game::Game(int width, int height, std::string title) {
     this->window = new raylib::Window(width, height, title);
-    this->player.ImportModel("src/models/OBJ/plane.obj");
-    SetTargetFPS(60);
+    
+    this->player.ImportModel("src/models/OBJ/plane.obj", "src/models/OBJ/plane_diffuse.png", 0.015f);
+    this->player.ImportModel("src/models/OBJ/castle.obj", "src/models/OBJ/castle_diffuse.png", 0.020f);
+    this->player.ImportModel("src/models/OBJ/well.obj", "src/models/OBJ/well_diffuse.png", 0.12f);
+    this->player.ImportModel("src/models/OBJ/turret.obj", "src/models/OBJ/turret_diffuse.png", 0.06f);
 
+    SetTargetFPS(60);
 
     this->camera.position = (Vector3){-4.0f, 7.50f, -5.0f};
     this->camera.target = (Vector3){0.0f, 0.0f, 2.0f};
@@ -35,6 +39,9 @@ void Game::PollEvents() {
 
     if (IsKeyPressed(KEY_UP))
         this->onKeyPress(KEY_UP);
+
+    if (IsKeyPressed(KEY_S))
+        this->player.SwitchModel();
 }
 
 void Game::Update(double time, double deltaTime) {
