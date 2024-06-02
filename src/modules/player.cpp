@@ -8,14 +8,24 @@ Player::Player(double worldSpeed) {
     this->worldSpeed = worldSpeed;
 }
 
-void Player::ImportModel(const std::string& path) {
-    this->model = LoadModel(path.c_str());
-    this->model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture("src/models/OBJ/plane_diffuse.png");
-    this->model.transform = MatrixScale(0.015, 0.015, 0.015);
+void Player::ImportModel(const std::string& path, const std::string& texturePath, float scale) {
+    Model model = LoadModel(path.c_str());
+    model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture(texturePath.c_str());
+    model.transform = MatrixScale(scale, scale, scale);
+    models.push_back(model);
+    scales.push_back(scale);
+}
+
+void Player::SwitchModel() {
+    if (!models.empty()) {
+        currentModelIndex = (currentModelIndex + 1) % models.size();  // Switch to the next model
+    }
 }
 
 void Player::Draw() {
-    DrawModel(this->model, this->position, 1.0f, WHITE);
+    if (!models.empty()) {
+        DrawModel(this->models[currentModelIndex], this->position, 1.0f, WHITE);
+    }
 }
 
 void Player::Update() {
