@@ -15,7 +15,6 @@ enum JumpType {
 
 class Player {
    private:
-    raylib::Material material;
     Vector3 position = Vector3{0, 0.25, 0};
     double worldSpeed;
     double currentSpeed;
@@ -26,6 +25,8 @@ class Player {
    public:
     Player(double speed);
     void Draw();
+    void ImportModel(const std::string& path, const std::string& texturePath, float scale);
+    void SwitchModel();
     void Update();
     void JumpForward();
     void JumpLeft();

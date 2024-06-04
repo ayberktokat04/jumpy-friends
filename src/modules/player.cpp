@@ -4,10 +4,24 @@ Player::Player(double worldSpeed) {
     this->worldSpeed = worldSpeed;
 }
 
-void Player::Draw() {
-    DrawSphere(this->position, 0.15, RED);
+void Player::ImportModel(const std::string& path, const std::string& texturePath, float scale) {
+    Model model = LoadModel(path.c_str());
+    model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTexture(texturePath.c_str());
+    model.transform = MatrixScale(scale, scale, scale);
+    models.push_back(model);
+    scales.push_back(scale);
 }
 
+void Player::SwitchModel() {
+    if (!models.empty()) {
+        currentModelIndex = (currentModelIndex + 1) % models.size();  // Switch to the next model
+    }
+}
+void Player::Draw() {
+    if (!models.empty()) {
+        DrawModel(this->models[currentModelIndex], this->position, 1.0f, WHITE);
+    }
+}
 void Player::Update() {
     // Add world movement
     this->position.z -= this->worldSpeed;
