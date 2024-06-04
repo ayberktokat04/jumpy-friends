@@ -21,10 +21,12 @@ class Game {
     double worldSpeed = 0.02;
     Ground ground = Ground(RENDER_CHUNK_SIZE, this->worldSpeed);
     Player player = Player(this->worldSpeed);
+    GameState state;
 
     void Display(double time, double deltaTime);
     void Update(double time, double deltaTime);
     void PollEvents();
+    bool CheckCollisions();
 
     void onClick(Vector2 position);
     void onKeyPress(int key);

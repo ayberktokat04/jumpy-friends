@@ -2,6 +2,7 @@
 
 Game::Game(int width, int height, std::string title) {
     this->window = new raylib::Window(width, height, title);
+    this->state = Playing;
 
     SetTargetFPS(60);
 
@@ -19,10 +20,15 @@ void Game::Start() {
         this->PollEvents();
         this->Update(time, deltaTime);
         this->Display(time, deltaTime);
+        
     }
 }
 
 void Game::PollEvents() {
+    if (this->state == Finish) {
+        return;
+    }
+
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         this->onClick(GetMousePosition());
 
@@ -40,8 +46,16 @@ void Game::PollEvents() {
 }
 
 void Game::Update(double time, double deltaTime) {
+    if (this->state == Finish) {
+        return;
+    }
+
     this->ground.Update();
     this->player.Update();
+    if (CheckCollisions()) {
+        std::cout << "Game Over!" << std::endl;
+        this-> state = Finish;
+    }
 }
 
 void Game::Display(double time, double deltaTime) {
@@ -55,6 +69,10 @@ void Game::Display(double time, double deltaTime) {
             this->player.Draw();
         }
         EndMode3D();
+
+        if (this->state == Finish) {
+            DrawText("Game Over!", GetScreenWidth() / 2 - MeasureText("Game Over!", 20) / 2, GetScreenHeight() / 2 - 10, 20, RED);
+        }
     }
     EndDrawing();
 }
@@ -84,3 +102,24 @@ void Game::onKeyPress(int key) {
         return;
     }
 }
+
+bool Game::CheckCollisions() {
+    BoundingBox playerBox = this->player.GetBoundingBox();
+    const auto& chunks = this->ground.getChunks();  
+
+    for (const auto& chunk : chunks) {
+        if (chunk.type == Road || chunk.type == River) {
+            for (int d = 0; d < chunk.movingItemsNum; d++) {
+                int idx = (chunk.startIdx + d) % chunk.movingItemCapacity;
+                BoundingBox itemBox = chunk.movingItems[idx]->GetBoundingBox(chunk.position);
+
+                if (CheckCollisionBoxes(playerBox, itemBox)) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
