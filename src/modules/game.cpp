@@ -34,6 +34,15 @@ void Game::PollEvents() {
 
     if (IsKeyPressed(KEY_UP))
         this->onKeyPress(KEY_UP);
+
+    if (IsKeyPressed(KEY_LEFT))
+        this->onKeyPress(KEY_LEFT);
+
+    if (IsKeyPressed(KEY_RIGHT))
+        this->onKeyPress(KEY_RIGHT);
+
+    if (IsKeyPressed(KEY_DOWN))
+        this->onKeyPress(KEY_DOWN);
 }
 
 void Game::Update(double time, double deltaTime) {
@@ -57,10 +66,27 @@ void Game::Display(double time, double deltaTime) {
 }
 
 void Game::onClick(Vector2 position) {
-    this->player.Jump();
+    this->player.JumpForward();
 }
 
 void Game::onKeyPress(int key) {
-    if (key == KEY_UP)
-        this->player.Jump();
+    if (key == KEY_UP) {
+        this->player.JumpForward();
+        return;
+    }
+
+    if (key == KEY_LEFT) {
+        this->player.JumpLeft();
+        return;
+    }
+
+    if (key == KEY_RIGHT) {
+        this->player.JumpRight();
+        return;
+    }
+
+    if (key == KEY_DOWN) {
+        this->player.JumpBackward();
+        return;
+    }
 }

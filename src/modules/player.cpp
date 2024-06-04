@@ -11,34 +11,52 @@ void Player::Draw() {
 void Player::Update() {
     // Add world movement
     this->position.z -= this->worldSpeed;
-    zProgress -= this->worldSpeed;
 
-    if (this->movement > 0.95) {
-        movement = -1;
-        zProgress += 1;
-        this->position.z = zProgress;
-
-    } else if (this->movement >= 0) {
-        this->position.z += (1 - movement) * 0.15;
-        movement += (1 - movement) * 0.15;
-    }
-
-    if (!this->jumped) return;
+    if (this->jumpType == JumpType::None) return;
 
     if (this->position.y < 0.25) {
         this->position.y = 0.25;
-        this->jumped = false;
+        this->jumpType = JumpType::None;
         return;
     }
 
-    this->jumpSpeed += gravity;
-    this->position.y += jumpSpeed;
+    if (this->jumpType == JumpType::Forward)
+        this->position.z += 0.5f / (JUMP_SPEED / abs(gravity));
+    else if (this->jumpType == JumpType::Left)
+        this->position.x += 0.5f / (JUMP_SPEED / abs(gravity));
+    else if (this->jumpType == JumpType::Right)
+        this->position.x -= 0.5f / (JUMP_SPEED / abs(gravity));
+    else if (this->jumpType == JumpType::Backward)
+        this->position.z -= 0.5f / (JUMP_SPEED / abs(gravity));
+
+    this->currentSpeed += gravity;
+    this->position.y += currentSpeed;
 }
 
-void Player::Jump() {
-    if (!this->jumped) {
-        this->jumpSpeed = 0.1;
-        this->jumped = true;
-        this->movement = 0;
-    }
+void Player::JumpForward() {
+    if (this->jumpType != JumpType::None) return;
+
+    this->currentSpeed = JUMP_SPEED;
+    this->jumpType = JumpType::Forward;
+}
+
+void Player::JumpLeft() {
+    if (this->jumpType != JumpType::None) return;
+
+    this->currentSpeed = JUMP_SPEED;
+    this->jumpType = JumpType::Left;
+}
+
+void Player::JumpRight() {
+    if (this->jumpType != JumpType::None) return;
+
+    this->currentSpeed = JUMP_SPEED;
+    this->jumpType = JumpType::Right;
+}
+
+void Player::JumpBackward() {
+    if (this->jumpType != JumpType::None) return;
+
+    this->currentSpeed = JUMP_SPEED;
+    this->jumpType = JumpType::Backward;
 }
