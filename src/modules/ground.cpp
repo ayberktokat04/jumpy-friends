@@ -9,7 +9,7 @@ Ground::Ground(int chunkCount, double worldSpeed) {
 
 void Ground::SetupGround(int chunkCount) {
     int i;
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < 2; i++) {
         Chunk freewalk = Chunk{FreeWalk, JustExisting, Vector3{6, 0.1, (float)i}};
         this->chunks.push_back(freewalk);
     }

@@ -22,9 +22,20 @@ void Game::isHere() {
         double time = GetTime();
         double deltaTime = GetFrameTime();
         this->PollEvents();
-        this->Update(time, deltaTime);
+
+        if (this->gameState == Start){
+            this->DisplayStart(time, deltaTime);
+        }
+
+        else if (this->gameState == Playing) {
+            this->Update(time, deltaTime);
+            this->DisplayPlay(time, deltaTime);
+        }
+        else if (this->gameState == Finish)
+            this->DisplayFinish(time, deltaTime);
+        
         // UpdateLightValues(shader, light);
-        this->DisplayPlay(time, deltaTime);
+    
     }
 }
 
@@ -49,11 +60,14 @@ void Game::DisplayStart(double time, double deltaTime) {
             ClearBackground(Color{0, 232, 0, 1});
             BeginMode3D(camera);
             {
+
                 // DrawGrid(40, 0.5f);
                 this->ground.Draw();
                 this->player.Draw();
             }
             EndMode3D();
+
+
         }
     EndDrawing();
     

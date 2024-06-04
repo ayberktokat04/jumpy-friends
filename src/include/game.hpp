@@ -2,6 +2,8 @@
 #include <iostream>
 #include <raylib-cpp.hpp>
 
+#include "startScreen.hpp"
+
 #include "ground.hpp"
 #include "player.hpp"
 #include "rlights.h"
