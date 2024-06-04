@@ -10,11 +10,6 @@ Game::Game(int width, int height, std::string title) {
     this->camera.up = (Vector3){0.0f, 1.0f, 0.0f};
     this->camera.fovy = 40.0f;
     this->camera.projection = CAMERA_PERSPECTIVE;
-
-    // this->shader.locs[SHADER_LOC_VECTOR_VIEW] = GetShaderLocation(shader, "viewPos");
-
-    // float cameraPos[3] = {camera.position.x, camera.position.y, camera.position.z};
-    // SetShaderValue(shader, shader.locs[SHADER_LOC_VECTOR_VIEW], cameraPos, SHADER_UNIFORM_VEC3);
 }
 
 void Game::Start() {
@@ -23,7 +18,6 @@ void Game::Start() {
         double deltaTime = GetFrameTime();
         this->PollEvents();
         this->Update(time, deltaTime);
-        // UpdateLightValues(shader, light);
         this->Display(time, deltaTime);
     }
 }
