@@ -23,7 +23,6 @@ class Game {
     double worldSpeed = 0.02;
     Ground ground = Ground(RENDER_CHUNK_SIZE, this->worldSpeed);
     Player player = Player(this->worldSpeed);
-    GameState state;
 
     void DisplayStart(double time, double deltaTime);
     void DisplayPlay(double time, double deltaTime);
@@ -39,4 +38,5 @@ class Game {
    public:
     Game(int, int, std::string);
     void isHere();
+    void Restart();
 };

@@ -3,7 +3,6 @@
 #include "player.hpp"
 Game::Game(int width, int height, std::string title) {
     this->window = new raylib::Window(width, height, title);
-    this->state = Playing;
 
     this->player.ImportModel("src/models/OBJ/plane.obj", "src/models/OBJ/plane_diffuse.png", 0.015f);
     this->player.ImportModel("src/models/OBJ/castle.obj", "src/models/OBJ/castle_diffuse.png", 0.020f);
@@ -17,6 +16,13 @@ Game::Game(int width, int height, std::string title) {
     this->camera.up = (Vector3){0.0f, 1.0f, 0.0f};
     this->camera.fovy = 40.0f;
     this->camera.projection = CAMERA_PERSPECTIVE;
+}
+
+void Game::Restart() {
+
+    this->ground = Ground(RENDER_CHUNK_SIZE, this->worldSpeed);
+    this->gameState = Playing;
+    this->player.resetPos();
 }
 
 void Game::isHere() {
@@ -38,9 +44,12 @@ void Game::isHere() {
 }
 
 void Game::PollEvents() {
-    if (this->state == Finish) {
+
+    if (this->gameState == Finish && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        this->Restart();
         return;
     }
+    
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         this->onClick(GetMousePosition());
@@ -62,15 +71,12 @@ void Game::PollEvents() {
 }
 
 void Game::Update(double time, double deltaTime) {
-    if (this->state == Finish) {
-        return;
-    }
 
     this->ground.Update();
     this->player.Update();
     if (CheckCollisions()) {
         std::cout << "Game Over!" << std::endl;
-        this-> state = Finish;
+        this->gameState = Finish;
     }
 }
 
@@ -100,6 +106,7 @@ void Game::DisplayPlay(double time, double deltaTime) {
             this->player.Draw();
         }
         EndMode3D();
+        
     }
     EndDrawing();
 }
@@ -107,18 +114,10 @@ void Game::DisplayPlay(double time, double deltaTime) {
 void Game::DisplayFinish(double time, double deltaTime) {
     BeginDrawing();
     {
-        ClearBackground(Color{0, 232, 0, 1});
-        BeginMode3D(camera);
-        {
-            // DrawGrid(40, 0.5f);
-            this->ground.Draw();
-            this->player.Draw();
-        }
-        EndMode3D();
+        ClearBackground(BLACK);
+        DrawText("Game Over!", GetScreenWidth() / 2 - MeasureText("Game Over!", 60) / 2, GetScreenHeight() / 2 - 30, 60, RED);
+        DrawText("Click to Restart", GetScreenWidth() / 2 - MeasureText("Click to Restart", 20) / 2, GetScreenHeight() / 2 + 40, 20, GRAY);
 
-        if (this->state == Finish) {
-            DrawText("Game Over!", GetScreenWidth() / 2 - MeasureText("Game Over!", 20) / 2, GetScreenHeight() / 2 - 10, 20, RED);
-        }
     }
     EndDrawing();
 }
@@ -128,29 +127,33 @@ void Game::onClick(Vector2 position) {
 }
 
 void Game::onKeyPress(int key) {
-    if (key == KEY_UP) {
-        this->player.JumpForward();
-        return;
-    }
 
-    if (key == KEY_LEFT) {
-        this->player.JumpLeft();
-        return;
-    }
+    if (this->gameState == Playing) {
 
-    if (key == KEY_RIGHT) {
-        this->player.JumpRight();
-        return;
-    }
+        if (key == KEY_UP) {
+            this->player.JumpForward();
+            return;
+        }
 
-    if (key == KEY_DOWN) {
-        this->player.JumpBackward();
-        return;
-    }
+        if (key == KEY_LEFT) {
+            this->player.JumpLeft();
+            return;
+        }
 
-    if (key == KEY_S) {
-        this->player.SwitchModel();
-        return;
+        if (key == KEY_RIGHT) {
+            this->player.JumpRight();
+            return;
+        }
+
+        if (key == KEY_DOWN) {
+            this->player.JumpBackward();
+            return;
+        }
+
+        if (key == KEY_S) {
+            this->player.SwitchModel();
+            return;
+        }
     }
 }
 
