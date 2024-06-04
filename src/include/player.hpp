@@ -3,20 +3,32 @@
 #include <iostream>
 #include <raylib-cpp.hpp>
 
+#define JUMP_SPEED 0.1
+
+enum JumpType {
+    Forward,
+    Left,
+    Right,
+    Backward,
+    None
+};
+
 class Player {
    private:
     raylib::Material material;
     Vector3 position = Vector3{0, 0.25, 0};
     double worldSpeed;
-    double jumpSpeed;
-    double gravity = -0.01f;
-    double zProgress = 0;
+    double currentSpeed;
+    double gravity = -0.02f;
     double movement = -1;
-    bool jumped = false;
+    JumpType jumpType = JumpType::None;
 
    public:
     Player(double speed);
     void Draw();
     void Update();
-    void Jump();
+    void JumpForward();
+    void JumpLeft();
+    void JumpRight();
+    void JumpBackward();
 };
