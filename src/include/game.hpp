@@ -5,6 +5,7 @@
 #include "ground.hpp"
 #include "player.hpp"
 #include "rlights.h"
+#include "startScreen.hpp"
 
 #define RENDER_CHUNK_SIZE 30
 
@@ -18,12 +19,16 @@ class Game {
    private:
     raylib::Window* window;
     Camera3D camera;
+    GameState gameState = Playing;
     double worldSpeed = 0.02;
     Ground ground = Ground(RENDER_CHUNK_SIZE, this->worldSpeed);
     Player player = Player(this->worldSpeed);
     GameState state;
 
-    void Display(double time, double deltaTime);
+    void DisplayStart(double time, double deltaTime);
+    void DisplayPlay(double time, double deltaTime);
+    void DisplayFinish(double time, double deltaTime);
+
     void Update(double time, double deltaTime);
     void PollEvents();
     bool CheckCollisions();
@@ -33,5 +38,5 @@ class Game {
 
    public:
     Game(int, int, std::string);
-    void Start();
+    void isHere();
 };

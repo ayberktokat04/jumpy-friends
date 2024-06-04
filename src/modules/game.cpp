@@ -1,8 +1,14 @@
 #include "game.hpp"
 
+#include "player.hpp"
 Game::Game(int width, int height, std::string title) {
     this->window = new raylib::Window(width, height, title);
     this->state = Playing;
+
+    this->player.ImportModel("src/models/OBJ/plane.obj", "src/models/OBJ/plane_diffuse.png", 0.015f);
+    this->player.ImportModel("src/models/OBJ/castle.obj", "src/models/OBJ/castle_diffuse.png", 0.020f);
+    this->player.ImportModel("src/models/OBJ/well.obj", "src/models/OBJ/well_diffuse.png", 0.12f);
+    this->player.ImportModel("src/models/OBJ/turret.obj", "src/models/OBJ/turret_diffuse.png", 0.06f);
 
     SetTargetFPS(60);
 
@@ -13,14 +19,21 @@ Game::Game(int width, int height, std::string title) {
     this->camera.projection = CAMERA_PERSPECTIVE;
 }
 
-void Game::Start() {
+void Game::isHere() {
     while (!this->window->ShouldClose()) {
         double time = GetTime();
         double deltaTime = GetFrameTime();
         this->PollEvents();
-        this->Update(time, deltaTime);
-        this->Display(time, deltaTime);
-        
+
+        if (this->gameState == Start) {
+            this->DisplayStart(time, deltaTime);
+        }
+
+        else if (this->gameState == Playing) {
+            this->Update(time, deltaTime);
+            this->DisplayPlay(time, deltaTime);
+        } else if (this->gameState == Finish)
+            this->DisplayFinish(time, deltaTime);
     }
 }
 
@@ -43,6 +56,9 @@ void Game::PollEvents() {
 
     if (IsKeyPressed(KEY_DOWN))
         this->onKeyPress(KEY_DOWN);
+
+    if (IsKeyPressed(KEY_S))
+        this->onKeyPress(KEY_S);
 }
 
 void Game::Update(double time, double deltaTime) {
@@ -58,7 +74,37 @@ void Game::Update(double time, double deltaTime) {
     }
 }
 
-void Game::Display(double time, double deltaTime) {
+void Game::DisplayStart(double time, double deltaTime) {
+    BeginDrawing();
+    {
+        ClearBackground(Color{0, 232, 0, 1});
+        BeginMode3D(camera);
+        {
+            // DrawGrid(40, 0.5f);
+            this->ground.Draw();
+            this->player.Draw();
+        }
+        EndMode3D();
+    }
+    EndDrawing();
+}
+
+void Game::DisplayPlay(double time, double deltaTime) {
+    BeginDrawing();
+    {
+        ClearBackground(Color{0, 232, 0, 1});
+        BeginMode3D(camera);
+        {
+            // DrawGrid(40, 0.5f);
+            this->ground.Draw();
+            this->player.Draw();
+        }
+        EndMode3D();
+    }
+    EndDrawing();
+}
+
+void Game::DisplayFinish(double time, double deltaTime) {
     BeginDrawing();
     {
         ClearBackground(Color{0, 232, 0, 1});
@@ -101,7 +147,13 @@ void Game::onKeyPress(int key) {
         this->player.JumpBackward();
         return;
     }
+
+    if (key == KEY_S) {
+        this->player.SwitchModel();
+        return;
+    }
 }
+
 
 bool Game::CheckCollisions() {
     BoundingBox playerBox = this->player.GetBoundingBox();
@@ -122,4 +174,5 @@ bool Game::CheckCollisions() {
 
     return false;
 }
+
 
