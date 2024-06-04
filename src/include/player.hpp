@@ -21,6 +21,9 @@ class Player {
     double gravity = -0.02f;
     double movement = -1;
     JumpType jumpType = JumpType::None;
+    std::vector<Model> models;
+    std::vector<float> scales;
+    int currentModelIndex;
 
    public:
     Player(double speed);
