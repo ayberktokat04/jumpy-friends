@@ -21,10 +21,14 @@ class Game {
     // Light light = CreateLight(LIGHT_DIRECTIONAL, (Vector3){2, 2, 1}, Vector3Zero(), YELLOW, shader);
     Camera3D camera;
     double worldSpeed = 0.01;
+    GameState gameState = Start;
     Ground ground = Ground(RENDER_CHUNK_SIZE, this->worldSpeed);
     Player player = Player(this->worldSpeed);
 
-    void Display(double time, double deltaTime);
+    void DisplayStart(double time, double deltaTime);
+    void DisplayPlay(double time, double deltaTime);
+    void DisplayFinish(double time, double deltaTime);
+
     void Update(double time, double deltaTime);
     void PollEvents();
 
@@ -33,5 +37,6 @@ class Game {
 
    public:
     Game(int, int, std::string);
-    void Start();
+    void isHere();
+    
 };

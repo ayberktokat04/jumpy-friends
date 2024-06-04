@@ -17,16 +17,18 @@ Game::Game(int width, int height, std::string title) {
     // SetShaderValue(shader, shader.locs[SHADER_LOC_VECTOR_VIEW], cameraPos, SHADER_UNIFORM_VEC3);
 }
 
-void Game::Start() {
+void Game::isHere() {
     while (!this->window->ShouldClose()) {
         double time = GetTime();
         double deltaTime = GetFrameTime();
         this->PollEvents();
         this->Update(time, deltaTime);
         // UpdateLightValues(shader, light);
-        this->Display(time, deltaTime);
+        this->DisplayPlay(time, deltaTime);
     }
 }
+
+
 
 void Game::PollEvents() {
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
@@ -41,7 +43,23 @@ void Game::Update(double time, double deltaTime) {
     this->player.Update();
 }
 
-void Game::Display(double time, double deltaTime) {
+void Game::DisplayStart(double time, double deltaTime) {
+    BeginDrawing();
+        {
+            ClearBackground(Color{0, 232, 0, 1});
+            BeginMode3D(camera);
+            {
+                // DrawGrid(40, 0.5f);
+                this->ground.Draw();
+                this->player.Draw();
+            }
+            EndMode3D();
+        }
+    EndDrawing();
+    
+}
+
+void Game::DisplayPlay(double time, double deltaTime) {
     BeginDrawing();
     {
         ClearBackground(Color{0, 232, 0, 1});
@@ -55,6 +73,22 @@ void Game::Display(double time, double deltaTime) {
     }
     EndDrawing();
 }
+
+void Game::DisplayFinish(double time, double deltaTime) {
+    BeginDrawing();
+    {
+        ClearBackground(Color{0, 232, 0, 1});
+        BeginMode3D(camera);
+        {
+            // DrawGrid(40, 0.5f);
+            this->ground.Draw();
+            this->player.Draw();
+        }
+        EndMode3D();
+    }
+    EndDrawing();
+}
+
 
 void Game::onClick(Vector2 position) {
     this->player.Jump();

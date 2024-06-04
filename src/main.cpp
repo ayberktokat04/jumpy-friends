@@ -11,7 +11,7 @@ int main() {
 
     Game* game = new Game(screenWidth, screenHeight, "Jumpy Friends");
 
-    game->Start();
+    game->isHere();
 
     delete game;
 
