@@ -1,9 +1,5 @@
 #include "player.hpp"
 
-Player::Player() {
-    this->worldSpeed = 0.02;
-}
-
 Player::Player(double worldSpeed) {
     this->worldSpeed = worldSpeed;
 }
@@ -31,7 +27,6 @@ void Player::Update() {
 
     if (this->position.y < 0.25) {
         this->position.y = 0.25;
-        this->jumpSpeed = 0;
         this->jumped = false;
         return;
     }
@@ -42,7 +37,7 @@ void Player::Update() {
 
 void Player::Jump() {
     if (!this->jumped) {
-        this->jumpSpeed += 0.1;
+        this->jumpSpeed = 0.1;
         this->jumped = true;
         this->movement = 0;
     }

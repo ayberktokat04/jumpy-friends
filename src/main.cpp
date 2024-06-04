@@ -13,5 +13,7 @@ int main() {
 
     game->Start();
 
+    delete game;
+
     return 0;
 }

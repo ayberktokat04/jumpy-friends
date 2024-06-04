@@ -3,6 +3,8 @@
 #include <iostream>
 #include <raylib-cpp.hpp>
 
+#include "chunkItemMoving.hpp"
+
 enum ChunkType {
     FreeWalk,
     RoadBegin,
@@ -20,6 +22,12 @@ enum ChunkState {
 };
 
 struct Chunk {
+    ChunkItemMoving* movingItems[10];
+    int movingItemCapacity = 10;
+    int movingItemsNum = 0;
+    int startIdx = 0;
+    int endIdx = 0;
+
     ChunkType type;
     raylib::Vector3 position;
     ChunkState state;
@@ -34,6 +42,9 @@ struct Chunk {
         this->type = type;
         this->state = state;
         this->position = position;
+        if (this->type == Road || this->type == River) {
+            this->generateMovingChunkItem();
+        }
     }
 
     void Despawn();
@@ -41,4 +52,6 @@ struct Chunk {
     void Update(double);
     void Draw();
     void setPosition(raylib::Vector3);
+
+    void generateMovingChunkItem();
 };

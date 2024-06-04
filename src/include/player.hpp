@@ -14,10 +14,7 @@ class Player {
     double movement = -1;
     bool jumped = false;
 
-    void UpdateY();
-
    public:
-    Player();
     Player(double speed);
     void Draw();
     void Update();

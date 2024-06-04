@@ -16,7 +16,7 @@ void Ground::SetupGround(int chunkCount) {
 
     for (i; i < chunkCount; i++) {
         Chunk collapsedChunk = this->collapseNextChunk(this->chunks[i - 1]);
-        collapsedChunk.position = Vector3{0, 0.1, (float)i};
+        collapsedChunk.position = Vector3{6, 0, (float)i};
         this->chunks.push_back(collapsedChunk);
     }
 }
@@ -46,7 +46,7 @@ Chunk Ground::collapseNextChunk(Chunk previousChunk) {
 
         case Road:
             random = GetRandomValue(0, 1000) / 1000.f;
-            return isbetween<double>(random, 0.f, 0.4)
+            return isbetween<double>(random, 0.f, 0.6)
                        ? Chunk{Road, JustExisting}
                        : Chunk{RoadEnd, JustExisting};
 
